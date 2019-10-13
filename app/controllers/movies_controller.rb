@@ -11,11 +11,12 @@ class MoviesController < ApplicationController
   end
 
   def index
+    @all_ratings = Movie.all_ratings
     @column_to_sort = params[:column]
+    @ratings = params[:ratings] || @all_ratings.zip([1, 1, 1, 1]).to_h
+    @movies = Movie.with_ratings(@ratings)
     if @column_to_sort
-      @movies = Movie.order(@column_to_sort)
-    else
-      @movies = Movie.all
+      @movies = @movies.order(@column_to_sort)
     end
   end
 
