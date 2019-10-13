@@ -11,9 +11,9 @@ class MoviesController < ApplicationController
   end
 
   def index
-    column_to_sort = params[:column]
-    if column_to_sort
-      @movies = Movie.order(column_to_sort)
+    @column_to_sort = params[:column]
+    if @column_to_sort
+      @movies = Movie.order(@column_to_sort)
     else
       @movies = Movie.all
     end
