@@ -12,11 +12,14 @@ class MoviesController < ApplicationController
 
   def index
     @all_ratings = Movie.all_ratings
-    @column_to_sort = params[:column]
-    @ratings = params[:ratings] || @all_ratings.zip([1, 1, 1, 1]).to_h
+    all_ratings_checked = @all_ratings.zip([1, 1, 1, 1]).to_h
+    @ratings = params[:ratings] || session[:ratings] || all_ratings_checked
+    session[:ratings] = @ratings
     @movies = Movie.with_ratings(@ratings)
+    @column_to_sort = params[:column] || session[:column]
     if @column_to_sort
       @movies = @movies.order(@column_to_sort)
+      session[:column] = @column_to_sort
     end
   end
 
